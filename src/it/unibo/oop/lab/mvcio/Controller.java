@@ -1,5 +1,10 @@
 package it.unibo.oop.lab.mvcio;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
+
 /**
  * 
  */
@@ -27,5 +32,54 @@ public class Controller {
      * System.getProperty("file.separator"). The combined use of those methods leads
      * to a software that runs correctly on every platform.
      */
-
+    private static final String DEFAULT_FILENAME = "output.txt";
+    private static final String DEFAULT_PATH = System.getProperty("user.home")
+            + System.getProperty("file.separator")
+            + DEFAULT_FILENAME;
+    private File currentFile;
+    /**
+     *  Default constructor.
+     */
+    public Controller() {
+        currentFile = new File(DEFAULT_PATH);
+    }
+    /**
+     *  Constructor with specified file path.
+     *  @param filePath the path of the file
+     *  @throws FileNotFoundException if file is not found
+     */
+    public Controller(final String filePath) throws FileNotFoundException {
+        currentFile = new File(filePath);
+    }
+    /**
+     * @param file file selected
+     * @throws FileNotFoundException if file is not found
+     */
+    public void setCurrentFile(final File file) {
+        currentFile = file;
+    }
+    /**
+     * @return the file currently selected
+     */
+    public File getFile() {
+        return currentFile;
+    }
+    /**
+     * @return the path of the file currently selected
+     */
+    public String getPath() {
+        return currentFile.getPath();
+    }
+    /**
+     * Writes a string on the current file.
+     * @param s the string to write
+     * @throws IOException if something goes wrong on the writing
+     */
+    public void write(final String s) throws IOException {
+        if (s != null) {
+            try (PrintStream ps = new PrintStream(currentFile)) {
+                ps.print(s);
+            }
+        }
+    }
 }
